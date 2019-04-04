@@ -6,24 +6,6 @@ Explain
 See restaurant.png for database layout
 See restaurant.pdf for initial end points documentations
 
-Create maven project with:
-jpa
-web
-devtools
-h2 (remember to remove the scope - runtime)
-actuator
-
-Create
-   manually added POM dependencies
-   application.properities!
-   config
-   model
-   repository
-   service
-   controller
-
-   give them seed data!
-
 To run the application - all in PostMan! Port is 2019
 
 Get: /restaurants/restaurants

@@ -6,23 +6,9 @@ Explain
 See restaurant.png for database layout
 See restaurant.pdf for initial end points documentations
 
-Create maven project with:
-jpa
-web
-devtools
-h2 (remember to remove the scope - runtime)
-actuator
-
-Create
-   manually added POM dependencies
-   application.properities!
-   config
-   model
-   repository
-   service
-   controller
-
-   give them seed data!
+Start with the initial version!
+We are working up to the testing version - the final product
+Remember the Restaurant is the main driving class
 
 To run the application - all in PostMan! Port is 2019
 
@@ -90,6 +76,7 @@ Add dependencies
 
 Add application.properties to test
 Add seed data to test
+Build test prior to showing implememntation code
 
 Create RestaurantSeviceImplTest
 
@@ -98,5 +85,8 @@ Must manually add import static org.mockito.ArgumentMatchers.any;
 
 Create RestaurantControllerIntegrationTest
 
-Run with coverage and discuss missing testinged lines
+Run with coverage and discuss missing tested lines
+
+Build MenuServiceImplTest which causes you to build MenuService, MenuServiceImpl, and update MenuRespository
+
 
