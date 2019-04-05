@@ -32,7 +32,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 // mocking service to test controller
 
 @RunWith(SpringRunner.class)
-@WebMvcTest(value = RestaurantController.class)
+@WebMvcTest(value = RestaurantController.class, secure = false)
 public class RestaurantControllerTest
 {
 
