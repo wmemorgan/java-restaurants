@@ -6,8 +6,10 @@ import com.lambdaschool.restaurants.model.Restaurant;
 import com.lambdaschool.restaurants.model.RestaurantPayments;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.junit.runners.MethodSorters;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -21,42 +23,58 @@ import static junit.framework.TestCase.assertNotNull;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = RestaurantsApplication.class)
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class RestaurantServiceImplTest
 {
     @Autowired
     private RestaurantService restaurantService;
 
     @Before
-    public void setUp() throws Exception
+    public void AsetUp() throws Exception
     {
         MockitoAnnotations.initMocks(this);
     }
 
     @After
-    public void tearDown() throws Exception
+    public void BtearDown() throws Exception
     {
     }
 
     @Test
-    public void findAll()
+    public void CfindAll()
     {
         assertEquals(3, restaurantService.findAll().size());
     }
 
     @Test
-    public void findRestaurantById()
+    public void DfindRestaurantById()
     {
         assertEquals("Bird Cafe", restaurantService.findRestaurantById(10).getName());
     }
 
     @Test
-    public void findRestaurantByName()
+    public void EfindRestaurantByName()
     {
         assertEquals("Apple", restaurantService.findRestaurantByName("Apple").getName());
     }
 
+    @Test
+    public void EAupdate()
+    {
+        ArrayList<RestaurantPayments> thisPay = new ArrayList<>();
+        Restaurant r1 = new Restaurant(null,
+                null,
+                null, "ZZ", null,
+                thisPay);
+        r1.setRestaurantid(10);
+
+        Restaurant updatedR1 = restaurantService.update(r1, 10);
+
+        assertEquals("ZZ", updatedR1.getState());
+    }
+
     @Test (expected = EntityNotFoundException.class)
-    public void deleteNotFound()
+    public void FdeleteNotFound()
     {
         restaurantService.delete(100);
         assertEquals(2, restaurantService.findAll().size());
@@ -64,7 +82,7 @@ public class RestaurantServiceImplTest
 
 
     @Test
-    public void deleteFound()
+    public void GdeleteFound()
     {
         restaurantService.delete(10);
         assertEquals(2, restaurantService.findAll().size());
@@ -72,7 +90,7 @@ public class RestaurantServiceImplTest
 
 
     @Test
-    public void save()
+    public void Hsave()
     {
         ArrayList<RestaurantPayments> thisPay = new ArrayList<>();
         String rest3Name = "Number 1 Test Eats";
@@ -88,20 +106,5 @@ public class RestaurantServiceImplTest
 
         Restaurant foundRestaurant = restaurantService.findRestaurantById(addRestaurant.getRestaurantid());
         assertEquals(addRestaurant.getName(), foundRestaurant.getName());
-    }
-
-    @Test
-    public void update()
-    {
-        ArrayList<RestaurantPayments> thisPay = new ArrayList<>();
-        Restaurant r1 = new Restaurant(null,
-                null,
-                null, "ZZ", null,
-                thisPay);
-        r1.setRestaurantid(10);
-
-        Restaurant updatedR1 = restaurantService.update(r1, 10);
-
-        assertEquals("ZZ", updatedR1.getState());
     }
 }

@@ -21,7 +21,6 @@ public class RestaurantController
     @Autowired
     private RestaurantService restaurantService;
 
-
     @GetMapping(value = "/restaurants",
                 produces = {"application/json"})
     public ResponseEntity<?> listAllRestaurants()
