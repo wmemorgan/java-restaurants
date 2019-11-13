@@ -25,6 +25,20 @@ public class RestaurantServiceImpl implements RestaurantService
 
 
     @Override
+    public List<Restaurant> findRestaurantByNameLike(String name)
+    {
+        List<Restaurant> list = restrepos.findByNameContainingIgnoreCase(name);
+        return list;
+    }
+
+    @Override
+    public List<Restaurant> findNameCity(String name, String city)
+    {
+        List<Restaurant> list = restrepos.findByNameContainingIgnoreCaseAndCityContainingIgnoreCase(name, city);
+        return list;
+    }
+
+    @Override
     public List<Restaurant> findAll()
     {
         List<Restaurant> list = new ArrayList<>();

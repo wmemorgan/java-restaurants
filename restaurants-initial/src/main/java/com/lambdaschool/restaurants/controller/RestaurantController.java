@@ -29,6 +29,25 @@ public class RestaurantController
         return new ResponseEntity<>(myRestaurants, HttpStatus.OK);
     }
 
+    @GetMapping(value = "/restaurants/name/{name}/city/{city}",
+                produces = {"application/json"})
+    public ResponseEntity<?> listRestaurantNameCity(@PathVariable String name,
+                                                    @PathVariable String city)
+    {
+        List<Restaurant> myRestaurants = restaurantService.findNameCity(name, city);
+        return new ResponseEntity<>(myRestaurants, HttpStatus.OK);
+    }
+
+
+    @GetMapping(value = "/restaurants/namelike/{name}",
+                produces = {"application/json"})
+    public ResponseEntity<?> listRestaurantNameLike(@PathVariable String name)
+    {
+        List<Restaurant> myRestaurants = restaurantService.findRestaurantByNameLike(name);
+        return new ResponseEntity<>(myRestaurants, HttpStatus.OK);
+    }
+
+
     @GetMapping(value = "/restaurant/{restaurantId}",
                 produces = {"application/json"})
     public ResponseEntity<?> getRestaurantById(

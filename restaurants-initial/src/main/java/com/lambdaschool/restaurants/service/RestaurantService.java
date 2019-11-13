@@ -12,6 +12,10 @@ public interface RestaurantService
 
     Restaurant findRestaurantByName(String name);
 
+    List<Restaurant> findRestaurantByNameLike(String name);
+
+    List<Restaurant> findNameCity(String name, String city);
+
     void delete(long id);
 
     Restaurant save(Restaurant restaurant);

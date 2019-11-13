@@ -20,7 +20,7 @@ import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = RestaurantsApplication.class)
-public class MenuServiceImplTest
+public class MenuServiceImplUnitTest
 {
     @Autowired
     private MenuService menuService;

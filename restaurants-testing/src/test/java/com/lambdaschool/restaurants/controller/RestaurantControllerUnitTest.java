@@ -33,7 +33,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(value = RestaurantController.class, secure = false)
-public class RestaurantControllerTest
+public class RestaurantControllerUnitTest
 {
 
     @Autowired
@@ -93,7 +93,7 @@ public class RestaurantControllerTest
         r2.getMenus().add(new Menu("Tacos", 10.49, r2));
         r2.getMenus().get(0).setMenuId(30);
         r2.getMenus().add(new Menu("Barbacoa", 12.75, r2));
-        r2.getMenus().get(0).setMenuId(31);
+        r2.getMenus().get(1).setMenuId(31);
 
 
         restaurantList.add(r2);
@@ -129,6 +129,12 @@ public class RestaurantControllerTest
         ObjectMapper mapper = new ObjectMapper();
         String er = mapper.writeValueAsString(restaurantList);
 
+        System.out.println("Expect: " + er);
+        System.out.println("Actual: " + tr);
+
+        System.out.println("Expect: " + er);
+        System.out.println("Actual: " + tr);
+
         assertEquals("Rest API Returns List", er, tr);
     }
 
@@ -146,6 +152,9 @@ public class RestaurantControllerTest
         ObjectMapper mapper = new ObjectMapper();
         String er = mapper.writeValueAsString(restaurantList.get(1));
 
+        System.out.println("Expect: " + er);
+        System.out.println("Actual: " + tr);
+
         assertEquals("Rest API Returns List", er, tr);
     }
 
@@ -161,6 +170,9 @@ public class RestaurantControllerTest
         String tr = r.getResponse().getContentAsString();
 
         String er = "";
+
+        System.out.println("Expect: " + er);
+        System.out.println("Actual: " + tr);
 
         assertEquals("Rest API Returns List", er, tr);
     }
@@ -178,6 +190,9 @@ public class RestaurantControllerTest
 
         ObjectMapper mapper = new ObjectMapper();
         String er = mapper.writeValueAsString(restaurantList.get(0));
+
+        System.out.println("Expect: " + er);
+        System.out.println("Actual: " + tr);
 
         assertEquals("Rest API Returns List", er, tr);
     }

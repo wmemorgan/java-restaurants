@@ -24,7 +24,7 @@ import static junit.framework.TestCase.assertNotNull;
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = RestaurantsApplication.class)
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class RestaurantServiceImplTest
+public class RestaurantServiceImplUnitTest
 {
     @Autowired
     private RestaurantService restaurantService;
