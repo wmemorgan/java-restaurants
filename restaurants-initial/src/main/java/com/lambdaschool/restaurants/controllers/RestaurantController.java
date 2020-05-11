@@ -34,7 +34,9 @@ public class RestaurantController
     /**
      * Returns a list of all restaurants
      * <br>Example: <a href="http://localhost:2019/restaurants/restaurants">http://localhost:2019/restaurants/restaurants</a>
-      * @return
+     *
+      * @return JSON list of all restaurants with a status of OK
+     *  @see RestaurantService#findAll() RestaurantService.findAll()
      */
     @GetMapping(value = "/restaurants",
         produces = {"application/json"})
@@ -42,6 +44,34 @@ public class RestaurantController
     {
         List<Restaurant> myRestaurants = restaurantService.findAll();
         return new ResponseEntity<>(myRestaurants, HttpStatus.OK);
+    }
+
+    /**
+     * Returns a single restaurant based off a restaurant id number
+     * <br>Example: <a href="http://localhost:2019/restaurants/restaurant/7">http://localhost:2019/restaurants/restaurant/7</a>
+     *
+     * @param restaurantId The primary key of the restaurant you seek
+     * @return JSON object of the restaurant you seek
+     * @see RestaurantService#findRestaurantById(long) RestaurantService.findRestaurantById(long)
+     */
+    @GetMapping(value = "/restaurant/{restaurantId}",
+        produces = {"application/json"})
+    public ResponseEntity<?> getRestaurantById(
+        @PathVariable
+            Long restaurantId)
+    {
+        Restaurant r = restaurantService.findRestaurantById(restaurantId);
+        return new ResponseEntity<>(r, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/restaurant/name/{name}",
+        produces = {"application/json"})
+    public ResponseEntity<?> getRestaurantByName(
+        @PathVariable
+            String name)
+    {
+        Restaurant r = restaurantService.findRestaurantByName(name);
+        return new ResponseEntity<>(r, HttpStatus.OK);
     }
 
     @GetMapping(value = "/restaurants/name/{name}/city/{city}",
@@ -66,29 +96,6 @@ public class RestaurantController
         List<Restaurant> myRestaurants = restaurantService.findRestaurantByNameLike(name);
         return new ResponseEntity<>(myRestaurants, HttpStatus.OK);
     }
-
-
-    @GetMapping(value = "/restaurant/{restaurantId}",
-        produces = {"application/json"})
-    public ResponseEntity<?> getRestaurantById(
-        @PathVariable
-            Long restaurantId)
-    {
-        Restaurant r = restaurantService.findRestaurantById(restaurantId);
-        return new ResponseEntity<>(r, HttpStatus.OK);
-    }
-
-
-    @GetMapping(value = "/restaurant/name/{name}",
-        produces = {"application/json"})
-    public ResponseEntity<?> getRestaurantByName(
-        @PathVariable
-            String name)
-    {
-        Restaurant r = restaurantService.findRestaurantByName(name);
-        return new ResponseEntity<>(r, HttpStatus.OK);
-    }
-
 
     @PostMapping(value = "/restaurant",
         consumes = {"application/json"},
