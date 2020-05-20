@@ -11,29 +11,44 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
+/**
+ * Configures the default Swagger Documentation
+ */
 @Configuration
 @EnableSwagger2
 public class Swagger2Config
 {
+    /**
+     * Configures what to document using Swagger
+     *
+     * @return A Docket which is the primary interface for Swagger configuration
+     */
     @Bean
     public Docket api()
     {
         return new Docket(DocumentationType.SWAGGER_2)
             .select()
             .apis(RequestHandlerSelectors
-                .basePackage("com.lambdaschool.restaurants"))
+                .basePackage("com.lambdaschool"))
             .paths(PathSelectors.regex("/.*"))
             .build()
             .apiInfo(apiEndPointsInfo());
     }
 
+    /**
+     * Configures some information related to the Application for Swagger
+     *
+     * @return ApiInfo a Swagger object containing identification information for this application
+     */
     private ApiInfo apiEndPointsInfo()
     {
         return new ApiInfoBuilder().title("Restaurant Example")
             .description("Restaurant Example")
-            .contact(new Contact("John Mitchell", "http://www.lambdaschool.com", "john@lambdaschool.com"))
+            .contact(new Contact("John Mitchell",
+                "http://www.lambdaschool.com",
+                "john@lambdaschool.com"))
             .license("MIT")
-            .licenseUrl("https://github.com/LambdaSchool/java-restaurants/blob/master/LICENSE")
+            .licenseUrl("https://github.com/LambdaSchool/java-restaurant/blob/master/LICENSE")
             .version("1.0.0")
             .build();
     }
