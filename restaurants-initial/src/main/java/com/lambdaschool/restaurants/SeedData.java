@@ -37,18 +37,6 @@ public class SeedData
         Payment payType2 = new Payment("Cash");
         Payment payType3 = new Payment("Mobile Pay");
 
-        ArrayList<RestaurantPayments> allPay = new ArrayList<>();
-        allPay.add(new RestaurantPayments(new Restaurant(), payType1));
-        allPay.add(new RestaurantPayments(new Restaurant(), payType2));
-        allPay.add(new RestaurantPayments(new Restaurant(), payType3));
-
-        ArrayList<RestaurantPayments> cashPay = new ArrayList<>();
-        cashPay.add(new RestaurantPayments(new Restaurant(), payType2));
-
-        ArrayList<RestaurantPayments> noCashPay = new ArrayList<>();
-        noCashPay.add(new RestaurantPayments(new Restaurant(), payType1));
-        noCashPay.add(new RestaurantPayments(new Restaurant(), payType3));
-
         payrepos.save(payType1);
         payrepos.save(payType2);
         payrepos.save(payType3);
@@ -57,8 +45,10 @@ public class SeedData
         String rest1Name = "Apple";
         Restaurant r1 = new Restaurant(rest1Name,
             "123 Main Street",
-            "City", "ST", "555-555-1234",
-            allPay);
+            "City", "ST", "555-555-1234");
+        r1.getPayments().add(new RestaurantPayments(r1, payType1));
+        r1.getPayments().add(new RestaurantPayments(r1, payType2));
+        r1.getPayments().add(new RestaurantPayments(r1, payType3));
         r1.getMenus()
             .add(new Menu("Mac and Cheese", 6.95, r1));
         r1.getMenus()
@@ -75,8 +65,8 @@ public class SeedData
         String rest2Name = "Eagle Cafe";
         Restaurant r2 = new Restaurant(rest2Name,
             "321 Uptown Drive",
-            "Town", "ST", "555-555-5555",
-            cashPay);
+            "Town", "ST", "555-555-5555");
+        r2.getPayments().add(new RestaurantPayments(r2, payType2));
         r2.getMenus()
             .add(new Menu("Tacos", 10.49, r2));
         r2.getMenus()
@@ -87,8 +77,9 @@ public class SeedData
         String rest3Name = "Number 1 Eats";
         Restaurant r3 = new Restaurant(rest3Name,
             "565 Side Avenue",
-            "Village", "ST", "555-123-1555",
-            noCashPay);
+            "Village", "ST", "555-123-1555");
+        r3.getPayments().add(new RestaurantPayments(r3, payType1));
+        r3.getPayments().add(new RestaurantPayments(r3, payType3));
         r3.getMenus()
             .add(new Menu("Pizza", 15.15, r3));
 

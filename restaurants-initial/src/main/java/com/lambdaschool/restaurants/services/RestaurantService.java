@@ -79,24 +79,4 @@ public interface RestaurantService
     Restaurant update(
         Restaurant restaurant,
         long id);
-
-    /**
-     * Deletes a given restaurant payment combination
-     *
-     * @param  restaurantid The restaurant id of the restaurant part of this restaurant payment combination
-     * @param paymentid The payment id of the payment part of this restaurant payment combination
-     */
-    void deleteRestaurantPayment(
-        long restaurantid,
-        long paymentid);
-
-    /**
-     * Adds a given restaurant payment combination
-     *
-     * @param restaurantid The restaurant id of the restaurant part of this restaurant payment combination
-     * @param paymentid The payment id of the payment part of this restaurant payment combination
-     */
-    void addRestaurantPayment(
-        long restaurantid,
-        long paymentid);
 }

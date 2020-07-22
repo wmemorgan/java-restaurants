@@ -20,7 +20,7 @@ import java.util.List;
 @Transactional
 @Service(value = "restaurantService")
 public class RestaurantServiceImpl
-    implements RestaurantService
+        implements RestaurantService
 {
     /**
      * Connects this service to the restaurants table
@@ -49,8 +49,8 @@ public class RestaurantServiceImpl
 
     @Override
     public List<Restaurant> findNameCity(
-        String name,
-        String city)
+            String name,
+            String city)
     {
         List<Restaurant> list = restrepos.findByNameContainingIgnoreCaseAndCityContainingIgnoreCase(name, city);
         return list;
@@ -61,22 +61,22 @@ public class RestaurantServiceImpl
     {
         List<Restaurant> list = new ArrayList<>();
         restrepos.findAll()
-            .iterator()
-            .forEachRemaining(list::add);
+                .iterator()
+                .forEachRemaining(list::add);
         return list;
     }
 
     @Override
     public Restaurant findRestaurantById(long id) throws
-                                                  EntityNotFoundException
+            EntityNotFoundException
     {
         return restrepos.findById(id)
-            .orElseThrow(() -> new EntityNotFoundException("Restaurant id " + id + " not found!"));
+                .orElseThrow(() -> new EntityNotFoundException("Restaurant id " + id + " not found!"));
     }
 
     @Override
     public Restaurant findRestaurantByName(String name) throws
-                                                        EntityNotFoundException
+            EntityNotFoundException
     {
         Restaurant restaurant = restrepos.findByName(name);
 
@@ -92,7 +92,7 @@ public class RestaurantServiceImpl
     public void delete(long id)
     {
         if (restrepos.findById(id)
-            .isPresent())
+                .isPresent())
         {
             restrepos.deleteById(id);
         } else
@@ -110,15 +110,8 @@ public class RestaurantServiceImpl
         if (restaurant.getRestaurantid() != 0)
         {
             Restaurant oldRestaurant = restrepos.findById(restaurant.getRestaurantid())
-                .orElseThrow(() -> new EntityNotFoundException("Restaurant id " + restaurant.getRestaurantid() + " not found!"));
+                    .orElseThrow(() -> new EntityNotFoundException("Restaurant id " + restaurant.getRestaurantid() + " not found!"));
 
-            // delete the payments for the old restaurant we are replacing
-            for (RestaurantPayments rp : oldRestaurant.getPayments())
-            {
-                deleteRestaurantPayment(rp.getRestaurant()
-                    .getRestaurantid(), rp.getPayment()
-                    .getPaymentid());
-            }
             newRestaurant.setRestaurantid(restaurant.getRestaurantid());
         }
 
@@ -129,34 +122,24 @@ public class RestaurantServiceImpl
         newRestaurant.setTelephone(restaurant.getTelephone());
 
         newRestaurant.getPayments()
-            .clear();
-        if (restaurant.getRestaurantid() == 0)
+                .clear();
+        for (RestaurantPayments rp : restaurant.getPayments())
         {
-            for (RestaurantPayments rp : restaurant.getPayments())
-            {
-                Payment newPayment = payrepos.findById(rp.getPayment()
-                    .getPaymentid())
+            Payment newPayment = payrepos.findById(rp.getPayment()
+                                                           .getPaymentid())
                     .orElseThrow(() -> new EntityNotFoundException("Payment id " + rp.getPayment()
-                        .getPaymentid() + " not found!"));
+                            .getPaymentid() + " not found!"));
 
-                newRestaurant.addPayment(newPayment);
-            }
-        } else
-        {
-            // add the new payments for the restaurant we are replacing
-            for (RestaurantPayments rp : restaurant.getPayments())
-            {
-                addRestaurantPayment(newRestaurant.getRestaurantid(), rp.getPayment()
-                    .getPaymentid());
-            }
+            newRestaurant.getPayments()
+                    .add(new RestaurantPayments(newRestaurant, newPayment));
         }
 
         newRestaurant.getMenus()
-            .clear();
+                .clear();
         for (Menu m : restaurant.getMenus())
         {
             newRestaurant.getMenus()
-                .add(new Menu(m.getDish(), m.getPrice(), newRestaurant));
+                    .add(new Menu(m.getDish(), m.getPrice(), newRestaurant));
         }
 
         return restrepos.save(newRestaurant);
@@ -165,11 +148,11 @@ public class RestaurantServiceImpl
     @Transactional
     @Override
     public Restaurant update(
-        Restaurant restaurant,
-        long id)
+            Restaurant restaurant,
+            long id)
     {
         Restaurant currentRestaurant = restrepos.findById(id)
-            .orElseThrow(() -> new EntityNotFoundException("Restaurant " + id + " not found"));
+                .orElseThrow(() -> new EntityNotFoundException("Restaurant " + id + " not found"));
 
         if (restaurant.getName() != null)
         {
@@ -197,82 +180,32 @@ public class RestaurantServiceImpl
         }
 
         if (restaurant.getPayments()
-            .size() > 0)
+                .size() > 0)
         {
-            // delete the roles for the old restaurant we are replacing
-            for (RestaurantPayments rp : currentRestaurant.getPayments())
-            {
-                deleteRestaurantPayment(rp.getRestaurant()
-                    .getRestaurantid(), rp.getPayment()
-                    .getPaymentid());
-            }
-
-            // add the new roles for the restaurant we are replacing
             for (RestaurantPayments rp : restaurant.getPayments())
             {
-                addRestaurantPayment(currentRestaurant.getRestaurantid(), rp.getPayment()
-                    .getPaymentid());
+                Payment newPayment = payrepos.findById(rp.getPayment()
+                                                               .getPaymentid())
+                        .orElseThrow(() -> new EntityNotFoundException("Payment id " + rp.getPayment()
+                                .getPaymentid() + " not found!"));
+
+                currentRestaurant.getPayments()
+                        .add(new RestaurantPayments(currentRestaurant, newPayment));
             }
         }
 
         if (restaurant.getMenus()
-            .size() > 0)
+                .size() > 0)
         {
-            currentRestaurant.getMenus().clear();
+            currentRestaurant.getMenus()
+                    .clear();
             for (Menu m : restaurant.getMenus())
             {
                 currentRestaurant.getMenus()
-                    .add(new Menu(m.getDish(), m.getPrice(), currentRestaurant));
+                        .add(new Menu(m.getDish(), m.getPrice(), currentRestaurant));
             }
         }
 
         return restrepos.save(currentRestaurant);
-    }
-
-    @Transactional
-    @Override
-    public void deleteRestaurantPayment(
-        long restaurantid,
-        long paymentid)
-    {
-        restrepos.findById(restaurantid)
-            .orElseThrow(() -> new EntityNotFoundException("Restaurant id " + restaurantid + " not found!"));
-        payrepos.findById(paymentid)
-            .orElseThrow(() -> new EntityNotFoundException("Payment id " + paymentid + " not found!"));
-
-        if (restrepos.checkRestaurantPaymentCombo(restaurantid,
-            paymentid)
-            .getCount() > 0)
-        {
-            restrepos.deleteRestaurantPaymentCombo(restaurantid,
-                paymentid);
-        } else
-        {
-            throw new EntityNotFoundException("Restaurant and Payment Combination Does Not Exists");
-        }
-    }
-
-    @Transactional
-    @Override
-    public void addRestaurantPayment(
-        long restaurantid,
-        long paymentid)
-    {
-        restrepos.findById(restaurantid)
-            .orElseThrow(() -> new EntityNotFoundException("Restaurant id " + restaurantid + " not found!"));
-        payrepos.findById(paymentid)
-            .orElseThrow(() -> new EntityNotFoundException("Payment id " + paymentid + " not found!"));
-
-        if (restrepos.checkRestaurantPaymentCombo(restaurantid,
-            paymentid)
-            .getCount() <= 0)
-        {
-            restrepos.insertRestaurantPayment(userAuditing.getCurrentAuditor()
-                    .get(), restaurantid,
-                paymentid);
-        } else
-        {
-            throw new EntityNotFoundException("Restaurant and Payment Combination Does Not Exists");
-        }
     }
 }
