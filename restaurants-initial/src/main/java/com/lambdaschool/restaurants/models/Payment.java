@@ -11,7 +11,9 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * The entity allowing interaction with the payments table
@@ -43,7 +45,7 @@ public class Payment
         cascade = CascadeType.ALL)
     @JsonIgnoreProperties(value = "payment",
         allowSetters = true)
-    private List<RestaurantPayments> restaurants = new ArrayList<>();
+    private Set<RestaurantPayments> restaurants = new HashSet<>();
 
     /**
      * The default constructor required by the JPA
@@ -107,7 +109,7 @@ public class Payment
      *
      * @return the list of restaurants using this payment type
      */
-    public List<RestaurantPayments> getRestaurants()
+    public Set<RestaurantPayments> getRestaurants()
     {
         return restaurants;
     }
@@ -117,7 +119,7 @@ public class Payment
      *
      * @param restaurantPayments the new list of restaurants using this payment type
      */
-    public void setRestaurants(List<RestaurantPayments> restaurantPayments)
+    public void setRestaurants(Set<RestaurantPayments> restaurantPayments)
     {
         this.restaurants = restaurantPayments;
     }

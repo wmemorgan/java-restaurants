@@ -12,7 +12,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * The entity allowing interaction with the restaurants table
@@ -69,7 +71,7 @@ public class Restaurant
         cascade = CascadeType.ALL)
     @JsonIgnoreProperties(value = "restaurant",
         allowSetters = true)
-    private List<RestaurantPayments> payments = new ArrayList<>();
+    private Set<RestaurantPayments> payments = new HashSet<>();
 
     /**
      * The list of menu items for this restaurant
@@ -98,27 +100,19 @@ public class Restaurant
      * @param city      The city (String) where the restaurant is located
      * @param state     The two letter abbreviation of the state (String) where the restaurant is located
      * @param telephone The telephone number (String) for the restaurant
-     * @param payments  The list of payments this restaurant accepts
      */
     public Restaurant(
         String name,
         String address,
         String city,
         String state,
-        String telephone,
-        List<RestaurantPayments> payments)
+        String telephone)
     {
         this.name = name;
         this.address = address;
         this.city = city;
         this.state = state;
         this.telephone = telephone;
-
-        for (RestaurantPayments rp : payments)
-        {
-            rp.setRestaurant(this);
-        }
-        this.payments = payments;
     }
 
     /**
@@ -266,7 +260,7 @@ public class Restaurant
      *
      * @return the list of payments (Restaurant Payment Combination) for this restaurant
      */
-    public List<RestaurantPayments> getPayments()
+    public Set<RestaurantPayments> getPayments()
     {
         return payments;
     }
@@ -276,18 +270,8 @@ public class Restaurant
      *
      * @param restaurantPayments the new list of payments (Restaurant Payment Combination) for this restaurant
      */
-    public void setPayments(List<RestaurantPayments> restaurantPayments)
+    public void setPayments(Set<RestaurantPayments> restaurantPayments)
     {
         this.payments = restaurantPayments;
-    }
-
-    /**
-     * Adds one payment type to this restaurant
-     *
-     * @param payment the new payment type to add
-     */
-    public void addPayment(Payment payment)
-    {
-        payments.add(new RestaurantPayments(this, payment));
     }
 }

@@ -14,13 +14,9 @@ import java.util.Objects;
 /**
  * The entity allowing interaction with the restaurantpayments table.
  * The join table between restaurants and payments.
- * <br>
- * Table enforces a unique constraint fo the combination of restaurantid and paymentid.
- * These two together form the primary key.
  */
 @Entity
-@Table(name = "restaurantpayments",
-    uniqueConstraints = {@UniqueConstraint(columnNames = {"restaurantid", "paymentid"})})
+@Table(name = "restaurantpayments")
 public class RestaurantPayments
     extends Auditable
     implements Serializable
@@ -109,6 +105,22 @@ public class RestaurantPayments
     }
 
     @Override
+
+    /*
+       public boolean equals(Object o)
+    {
+        if (this == o)
+        {
+            return true;
+        }
+        if (!(o instanceof UserRoles))
+        {
+            return false;
+        }
+        UserRoles that = (UserRoles) o;
+        return ((user == null) ? 0 : user.getUserid()) == ((that.user == null) ? 0 : that.user.getUserid()) &&
+               ((role == null) ? 0 : role.getRoleid()) == ((that.role == null) ? 0 : that.role.getRoleid());
+     */
     public boolean equals(Object o)
     {
         if (this == o)
@@ -120,12 +132,13 @@ public class RestaurantPayments
             return false;
         }
         RestaurantPayments that = (RestaurantPayments) o;
-        return Objects.equals(getRestaurant(), that.getRestaurant()) && Objects.equals(getPayment(), that.getPayment());
+        return ((restaurant == null) ? 0 : restaurant.getRestaurantid()) == ((that.restaurant == null) ? 0 : that.restaurant.getRestaurantid()) &&
+                ((payment == null) ? 0 : payment.getPaymentid()) == ((that.payment == null) ? 0 : that.payment.getPaymentid());
     }
 
     @Override
     public int hashCode()
     {
-        return Objects.hash(getRestaurant(), getPayment());
+        return 37;
     }
 }

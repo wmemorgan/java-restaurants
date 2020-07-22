@@ -139,7 +139,7 @@ public class RestaurantServiceImpl
                     .orElseThrow(() -> new EntityNotFoundException("Payment id " + rp.getPayment()
                         .getPaymentid() + " not found!"));
 
-                newRestaurant.addPayment(newPayment);
+                newRestaurant.getPayments().add(new RestaurantPayments(newRestaurant, newPayment));
             }
         } else
         {
